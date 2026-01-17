@@ -1,5 +1,6 @@
 package api.test;
 
+import org.apache.logging.log4j.Logger;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -16,10 +17,13 @@ public class UserTest {
 	
 	User user;
 	
+	public Logger logger;
+	
+	
    @BeforeClass
    public void setupData() {
 	
-	  
+	 
 	  
 	  faker=new Faker();
 	  
@@ -33,19 +37,25 @@ public class UserTest {
 	  user.setPassword(faker.internet().password(true));
 	  user.setPhone(faker.phoneNumber().phoneNumber());
 	  
+	  
+	  
+	  
   }
    
    
    
     @Test(priority=2)
     public void testpostUser() {
+    	
+    	logger.info("***************Creating User************************");
 	  
 	  Response response = Userendpoints.CreateUser(user);
 	  
 	  Assert.assertEquals(response.getStatusCode(),200);
 	  
 	  response.then().log().all();
-	 
+	  
+	  logger.info("*******************************User Created*******************************");
 	 
 	 }
     
@@ -54,11 +64,15 @@ public class UserTest {
     @Test(priority=3)
     public  void testgetuser() {
     	
+    	 logger.info("***************Fetchin User************************");
+    	
     	Response response=Userendpoints.readUser(user.getUsername());
     	
     	Assert.assertEquals(response.getStatusCode(), 200 );
     	
     	response.then().log().all();
+    	
+  	  logger.info("***************User Fetch************************");
     	
     }
     
@@ -67,6 +81,8 @@ public class UserTest {
     @Test(priority=4)
     public void testupdateuser() {
     	
+    	logger.info("***************Updating User************************");
+    	
     	Response response= Userendpoints.updateUser(user.getUsername(),user);
     	
     	
@@ -74,6 +90,8 @@ public class UserTest {
     	
     	
     	response.then().log().all();
+    	
+    	logger.info("***************User Updated************************");
     
     	
     }
@@ -83,6 +101,8 @@ public class UserTest {
     @Test(priority=5)
     public void testdeleteuser() {
     	
+    	logger.info("***************Deleting  User************************");
+    	
     	Response response = Userendpoints.deleteUser(user.getUsername());
     	
     	
@@ -90,6 +110,9 @@ public class UserTest {
     	
     	
     	response.then().log().all();
+    	
+    	
+    	logger.info("***************User Deleted************************");
     	
     }
    
